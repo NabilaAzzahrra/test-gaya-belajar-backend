@@ -36,7 +36,7 @@ module.exports = {
 FROM 
     Tests
 GROUP BY 
-    user_id, nama, kelas, sekolah;`);
+    user_id, nama, kelas, sekolah`);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.sequelize.query(`DROP VIEW view_hasil`);
