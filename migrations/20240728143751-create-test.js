@@ -12,6 +12,9 @@ module.exports = {
       user_id: {
         type: Sequelize.STRING
       },
+      nama: {
+        type: Sequelize.STRING
+      },
       kelas: {
         type: Sequelize.STRING
       },
