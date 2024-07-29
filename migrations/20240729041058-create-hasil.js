@@ -34,7 +34,7 @@ module.exports = {
         ELSE 'Tie'
     END AS hasil
 FROM 
-    tests
+    Tests
 GROUP BY 
     user_id, nama, kelas, sekolah;
 
