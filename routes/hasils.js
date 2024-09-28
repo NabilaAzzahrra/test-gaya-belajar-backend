@@ -10,11 +10,11 @@ router.get('/', async (req, res) => {
                 exclude: "id",
             }
         });
-
-        return res.json(results);
+        return res.status(200).json(results);
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Internal Server Error');
+        return res.json({
+            message: error.message
+        });
     }
 });
 
@@ -25,38 +25,38 @@ router.get('/download', async (req, res) => {
                 exclude: "id",
             }
         });
-        
+
         const workbook = new ExcelJS.Workbook();
         const sheet = workbook.addWorksheet('Hasil Kecerdasan');
-        
+
         sheet.addRow(['No.', 'Nama Lengkap', 'Kelas', 'Sekolah', 'Score A', 'Score B', 'Score C', 'Hasil']);
-        
+
         const groupedResults = [];
-        
+
         results.forEach((result) => {
             const hasil = groupedResults.find((group) => group.user_id == result.user_id);
             // if (hasil) {
             //     hasil.agilities.push({
             //         jenis_kecerdasan: result.jenis_kecerdasan,
             //     });
-        
+
             //     // Assuming you want to keep only the first intelligence type
             //     // hasil.agilities = [hasil.agilities[0]];
-        
+
             // } else {
-                groupedResults.push({
-                    user_id: result.user_id,
-                    nama: result.nama,
-                    kelas: result.kelas,
-                    sekolah: result.sekolah,
-                    score_A: result.score_A,
-                    score_B: result.score_B,
-                    score_C: result.score_C,
-                    hasil: result.hasil,
-                });
+            groupedResults.push({
+                user_id: result.user_id,
+                nama: result.nama,
+                kelas: result.kelas,
+                sekolah: result.sekolah,
+                score_A: result.score_A,
+                score_B: result.score_B,
+                score_C: result.score_C,
+                hasil: result.hasil,
+            });
             // }
         });
-        
+
         groupedResults.forEach((groupedResult, index) => {
             sheet.addRow([
                 index + 1,
@@ -69,16 +69,17 @@ router.get('/download', async (req, res) => {
                 `${groupedResult.hasil}`,
             ]);
         });
-        
+
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', 'attachment; filename="example.xlsx"');
-        
+
         const buffer = await workbook.xlsx.writeBuffer();
         res.send(buffer);
-        
+
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Internal Server Error');
+        return res.json({
+            message: error.message
+        });
     }
 });
 
@@ -92,10 +93,11 @@ router.get('/:idUser', async (req, res) => {
                 user_id: req.params.idUser,
             }
         });
-        return res.json(hasils);
+        return res.status(200).json(hasils);
     } catch (error) {
-        console.error('Error:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.json({
+            message: error.message
+        });
     }
 });
 

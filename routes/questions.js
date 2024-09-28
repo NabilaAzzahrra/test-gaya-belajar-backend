@@ -10,10 +10,11 @@ router.get("/", async (req, res) => {
         as: 'details'
       }]
     });
-    return res.json(questions);
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Something went wrong' });
+    return res.status(200).json(questions);
+  } catch (error) {
+    return res.json({
+      message: error.message
+    });
   }
 });
 
@@ -29,13 +30,14 @@ router.get("/:id", async (req, res) => {
       }]
     });
     if (question) {
-      return res.json(question);
+      return res.status(200).json(question);
     } else {
       return res.status(404).json({ error: 'Question not found' });
     }
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Something went wrong' });
+  } catch (error) {
+    return res.json({
+      message: error.message
+    });
   }
 });
 
@@ -46,13 +48,14 @@ router.post("/", async (req, res) => {
       questions: req.body.questions,
     };
     const question = await Question.create(data);
-    return res.json({
+    return res.status(200).json({
       message: "Berhasil disimpan",
       data: question,
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Something went wrong' });
+  } catch (error) {
+    return res.json({
+      message: error.message
+    });
   }
 });
 
@@ -76,13 +79,14 @@ router.patch('/:id', async (req, res) => {
         as: 'details'
       }]
     });
-    return res.json({
+    return res.status(200).json({
       message: 'Berhasil diubah',
       data: question,
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Something went wrong' });
+  } catch (error) {
+    return res.json({
+      message: error.message
+    });
   }
 });
 
@@ -96,9 +100,10 @@ router.delete('/:id', async (req, res) => {
     return res.json({
       message: 'Berhasil dihapus',
     });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Something went wrong' });
+  } catch (error) {
+    return res.json({
+      message: error.message
+    });
   }
 });
 
